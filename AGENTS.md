@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application architecture
+
+- Keep the fraud-investigation prototype self-contained in the browser with deterministic synthetic demo data; label illustrative results and do not imply unavailable trained models or production decisions are active. The supplied archive lacks the application modules, model weights, and real datasets needed to run them.

@@ -1,0 +1,75 @@
+{
+  "source": "uploaded Python project, synopsis, and integrated-fraud-investigation.zip",
+  "capabilities": [
+    {
+      "capability": "Application code and routes",
+      "source": "app.py and synopsis describe a Streamlit case dashboard; the ZIP contains only one PNG and empty folders, while imported Python modules are missing.",
+      "outcome": "recreate",
+      "status": "verified",
+      "next_action": "The prototype preview and primary interactive flows have been checked."
+    },
+    {
+      "capability": "Schema and database",
+      "source": "No database provider, schema, migrations, or application tables were detected.",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "None."
+    },
+    {
+      "capability": "Application records and datasets",
+      "source": "No database records or PaySim/MIDV datasets were included; the synopsis specifies synthetic/public evaluation data.",
+      "outcome": "recreate_demo_only",
+      "status": "pending_external_data",
+      "next_action": "Synthetic dashboard cases are present. Actual research metrics require the PaySim/MIDV data, model training, and held-out evaluation."
+    },
+    {
+      "capability": "Authentication identities",
+      "source": "No authentication provider, user records, or account flows were detected.",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "None for this single-user prototype."
+    },
+    {
+      "capability": "Authorization and access boundaries",
+      "source": "No roles, access policies, or multi-user data were detected.",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "None for this single-user prototype."
+    },
+    {
+      "capability": "Uploaded files and model assets",
+      "source": "The ZIP contains only g_5.png; no source model weights, vector index, or training artifacts were detected.",
+      "outcome": "browser_preview_only",
+      "status": "pending_external_model_assets",
+      "next_action": "Document image preview and an explicitly illustrative browser-only JPEG difference are verified. Real ResNet18 and ELA model predictions require trained model weights and source modules."
+    },
+    {
+      "capability": "External providers and AI report generation",
+      "source": "The synopsis describes an optional OpenAI-compatible LLM API; .env.example contains blank optional settings and no credentials.",
+      "outcome": "offline_keyword_retrieval_and_cited_template",
+      "status": "pending_live_generation",
+      "next_action": "Offline retrieval and cited report preparation are verified. Live LLM generation requires enabling and securely configuring a provider."
+    },
+    {
+      "capability": "Public endpoints, callbacks, webhooks, and schedules",
+      "source": "No external endpoints, OAuth callbacks, webhooks, or schedules were detected.",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "None."
+    },
+    {
+      "capability": "Secrets and environment configuration",
+      "source": ".env.example contains empty optional LLM settings and APP_ENV=demo; no secret values were supplied.",
+      "outcome": "not_required_for_offline_demo",
+      "status": "verified",
+      "next_action": "Request credentials securely only if live LLM generation is later enabled."
+    },
+    {
+      "capability": "Cutover and production verification",
+      "source": "No published source app, live service, production backend, or external caller was identified.",
+      "outcome": "prototype_preview",
+      "status": "pending_research_inputs",
+      "next_action": "Preview workflows are verified. Production research metrics and live generation remain unverified without the dataset, model assets and configured AI provider."
+    }
+  ]
+}
