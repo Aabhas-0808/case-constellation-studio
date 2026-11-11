@@ -6,7 +6,14 @@
       "source": "app.py and synopsis describe a Streamlit case dashboard; the ZIP contains only one PNG and empty folders, while imported Python modules are missing.",
       "outcome": "recreate",
       "status": "verified",
-      "next_action": "The prototype preview and primary interactive flows have been checked."
+      "next_action": "The prototype preview, manual transaction entry, CSV template download, custom CSV import, and PaySim-shaped import have been checked."
+    },
+    {
+      "capability": "Synthetic transaction CSV intake",
+      "source": "The synopsis describes PaySim transaction review; the supplied archive did not include the source modules or a transaction data export.",
+      "outcome": "browser_only_csv_import_with_synthetic_scoring",
+      "status": "verified",
+      "next_action": "Synthetic CSV and PaySim-shaped samples import in the preview; PaySim fraud labels are ignored."
     },
     {
       "capability": "Schema and database",

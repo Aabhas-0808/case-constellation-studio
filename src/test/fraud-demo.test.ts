@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   buildInvestigationReport,
+  DEFAULT_TRANSACTION,
   MAX_DOCUMENT_IMAGE_BYTES,
   parseSyntheticTransactionCsv,
   rankKnowledgeSources,
@@ -144,7 +145,7 @@ describe("synthetic fraud investigation helpers", () => {
         "CASE-2041",
         ["TXN-39811"],
       ),
-    ).toThrow("repeats transaction ID");
+    ).toThrow("already exists or repeats in this CSV");
   });
 
   it("limits each CSV import to 100 transaction rows", () => {
@@ -175,5 +176,18 @@ describe("synthetic fraud investigation helpers", () => {
     expect(sample).toBeDefined();
     if (!sample) return;
     expect(scoreDemoTransaction(sample)).not.toHaveProperty("isFraud");
+  });
+
+  it("keeps the synthetic score unchanged when PaySim fraud labels differ", () => {
+    const imported = parseSyntheticTransactionCsv(
+      "step,type,amount,nameOrig,nameDest,isFraud\n25,CASH_IN,6100,C1001,C3001,0\n25,CASH_IN,6100,C1001,C3001,1",
+      "CASE-2041",
+    );
+    expect(imported[0]?.type).toBe("cash_in");
+    expect(imported[0]?.hour).toBe(1);
+    expect(imported).toHaveLength(2);
+    expect(scoreDemoTransaction(imported[0] ?? DEFAULT_TRANSACTION).score).toBe(
+      scoreDemoTransaction(imported[1] ?? DEFAULT_TRANSACTION).score,
+    );
   });
 });

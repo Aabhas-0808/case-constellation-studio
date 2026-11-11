@@ -1,7 +1,5 @@
-export type TransactionRecord = {
-  id: string;
-  caseId: string;
-  time: string;
+export type CsvTransactionFields = {
+  transactionId: string;
   from: string;
   to: string;
   amount: number;
@@ -9,7 +7,7 @@ export type TransactionRecord = {
   newBeneficiary: boolean;
   velocity: number;
   sharedAccounts: number;
-  type: "transfer" | "cash_out" | "payment";
+  type: "transfer" | "cash_in" | "cash_out" | "payment";
   channel: string;
 };
 
@@ -176,7 +174,8 @@ export function parseSyntheticTransactionCsv(
     channel: headerIndex(["channel", "payment_channel"]),
   };
   const sourceRows = headerIndex(["nameorig", "name_orig"]) !== -1;
-  const paysimFormat = index.step !== -1 && sourceRows;
+  const destinationRows = headerIndex(["namedest", "name_dest"]) !== -1;
+  const paysimFormat = index.step !== -1 && sourceRows && destinationRows;
   if (
     (index.id === -1 && !paysimFormat) ||
     index.source === -1 ||
@@ -205,7 +204,7 @@ export function parseSyntheticTransactionCsv(
     const hour = hourFromCsv ? Number(hourFromCsv) : stepFromCsv ? Number(stepFromCsv) % 24 : 14;
     const velocity = Number(value(index.velocity, "1"));
     const sharedAccounts = Number(value(index.shared, "0"));
-    const typeValue = value(index.type, "transfer")
+    const typeValue = value(index.type, paysimFormat ? "transfer" : "transfer")
       .toLowerCase()
       .replace(/[\s-]+/g, "_");
     const type: TransactionRecord["type"] =
@@ -213,9 +212,9 @@ export function parseSyntheticTransactionCsv(
         ? "cash_out"
         : typeValue === "cash_in" || typeValue === "cashin"
           ? "cash_in"
-        : typeValue === "payment"
-          ? "payment"
-          : "transfer";
+          : typeValue === "payment"
+            ? "payment"
+            : "transfer";
     const normalizedId = transactionId.toLowerCase();
 
     if (!transactionId || !from || !to || !Number.isFinite(amount) || amount <= 0) {
@@ -233,7 +232,7 @@ export function parseSyntheticTransactionCsv(
       throw new Error(`Row ${lineNumber} must have 0–100 linked sample accounts.`);
     }
     if (seen.has(normalizedId)) {
-      throw new Error(`Row ${lineNumber} repeats transaction ID “${transactionId}”.`);
+      throw new Error(`Transaction ID “${transactionId}” already exists or repeats in this CSV.`);
     }
     seen.add(normalizedId);
 
@@ -256,7 +255,6 @@ export function parseSyntheticTransactionCsv(
   }
 
   if (parsed.length === 0) throw new Error("The CSV file contains no transaction rows.");
-  if (parsed.length > 100) throw new Error("Import up to 100 transactions per CSV file.");
   return parsed;
 }
 
